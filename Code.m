@@ -21,3 +21,7 @@ for k = 1:length(B)
     boundary = B(k);
     plot(boundary(:,2),boundary(:,1),'w','LineWidth',2)
 end
+
+%https://www.mathworks.com/help/images/identifying-round-objects.html#d120e26688
+%https://www.mathworks.com/matlabcentral/answers/116793-how-to-classify-shapes-of-this-image-as-square-rectangle-triangle-and-circle
+
