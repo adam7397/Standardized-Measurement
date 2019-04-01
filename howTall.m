@@ -5,24 +5,20 @@ function [outputImage, heightString] = howTall(inputImage)
     id = imread('idphoto.jpg');
     imwrite(id,'idphoto.pgm');
     match('input.pgm', 'idphoto.pgm');
-    %input = imread('test.jpg');
-%     imshow(input);
-% 
-%     I = rgb2gray(input);
-%     bw = imbinarize(input);
-%     imshow(bw);
-% 
-%     bw = bwareaopen(bw,30);
-%     imshow(bw);
-% 
-%     se = strel('disk',2);
-%     bw = imclose(bw,se);
-%     imshow(bw);
-% 
-%     bw = imfill(bw, 'holes');
-%     imshow(bw);
-% 
-%     [B,L] = bwboundaries(bw,'noholes');
+    
+    I = rgb2gray(inputImage);
+    bw = imbinarize(I);
+    imshow(bw);
+    bw = bwareaopen(bw,30);
+    imshow(bw);
+    
+    se = strel('disk',2);
+    bw = imclose(bw,se);
+    imshow(bw);
+    bw = imfill(bw, 'holes');
+    imshow(bw);
+    [B,L] = bwboundaries(bw,'noholes');
+    
 %     hold on
 %     for k = 1:length(B)
 %         boundary = B(k);
