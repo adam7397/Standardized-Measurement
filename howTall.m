@@ -1,5 +1,10 @@
 function [outputImage, heightString] = howTall(inputImage)
-    input = inputImage;
+    input = imread(inputImage);
+    imwrite(input,'input.pgm');
+    input = imread('input.pgm');
+    id = imread('idphoto.jpg');
+    imwrite(id,'idphoto.pgm');
+    match('input.pgm', 'idphoto.pgm');
     %input = imread('test.jpg');
 %     imshow(input);
 % 
