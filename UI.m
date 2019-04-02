@@ -96,7 +96,7 @@ function goButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if isfield(handles,'myImage')
-     [outputImage outputText] = howTall(handles.myImage);
+     [outputImage, outputText] = howTall(handles.myImage);
      axes(handles.outputPreview);
      imshow(outputImage);
      set(handles.resultText,'string',outputText);
