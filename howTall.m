@@ -6,16 +6,19 @@ function [outputImage, heightString] = howTall(inputImage)
     imwrite(id,'idphoto.pgm');
     match('input.pgm', 'idphoto.pgm');
     
-    I = rgb2gray(inputImage);
-    bw = imbinarize(I);
+    %Image thresolding stuff
+    bw = imbinarize(input);
     imshow(bw);
     bw = bwareaopen(bw,30);
+    figure;
     imshow(bw);
     
-    se = strel('disk',2);
+    se = strel('square',2);
     bw = imclose(bw,se);
+    figure;
     imshow(bw);
     bw = imfill(bw, 'holes');
+    figure;
     imshow(bw);
     [B,L] = bwboundaries(bw,'noholes');
     
