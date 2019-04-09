@@ -7,20 +7,20 @@ function [outputImage, heightString] = howTall(inputImage)
     match('input.pgm', 'idphoto.pgm');
     
     %Image thresolding stuff
-    bw = imbinarize(input);
-    imshow(bw);
-    bw = bwareaopen(bw,30);
-    figure;
-    imshow(bw);
+    %bw = imbinarize(input);
+    %imshow(bw);
+    %bw = bwareaopen(bw,30);
+    %figure;
+    %imshow(bw);
     
-    se = strel('square',2);
-    bw = imclose(bw,se);
-    figure;
-    imshow(bw);
-    bw = imfill(bw, 'holes');
-    figure;
-    imshow(bw);
-    [B,L] = bwboundaries(bw,'noholes');
+    %se = strel('square',2);
+   % bw = imclose(bw,se);
+    %figure;
+    %imshow(bw);
+    %bw = imfill(bw, 'holes');
+    %figure;
+    %imshow(bw);
+    %[B,L] = bwboundaries(bw,'noholes');
     
 %     hold on
 %     for k = 1:length(B)
