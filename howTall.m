@@ -7,20 +7,34 @@ function [outputImage, heightString] = howTall(inputImage)
     match('input.pgm', 'idphoto.pgm');
     
     %Image thresolding stuff
-    %bw = imbinarize(input);
+    bw = imbinarize(input);
     %imshow(bw);
-    %bw = bwareaopen(bw,30);
-    %figure;
+    bw = bwareaopen(bw,30);
     %imshow(bw);
     
-    %se = strel('square',2);
-   % bw = imclose(bw,se);
-    %figure;
+    se = strel('square',2);
+    bw = imclose(bw,se);
     %imshow(bw);
-    %bw = imfill(bw, 'holes');
-    %figure;
-    %imshow(bw);
-    %[B,L] = bwboundaries(bw,'noholes');
+    bw = imfill(bw, 'holes');
+    figure;
+    imshow(bw);
+    [B,L] = bwboundaries(bw,'noholes');
+    
+    
+    %image boundaries from matlab forums
+    axis image; % Make sure image is not artificially stretched because of screen's aspect ratio.
+    hold on;
+    boundaries = bwboundaries(bw);
+    numberOfBoundaries = size(boundaries, 1);
+    for k = 1 : numberOfBoundaries
+        thisBoundary = boundaries{k};
+        plot(thisBoundary(:,2), thisBoundary(:,1), 'g', 'LineWidth', 2);
+    end
+    hold off;
+
+
+
+
     
 %     hold on
 %     for k = 1:length(B)
