@@ -23,11 +23,17 @@ function [outputImage, heightString] = howTall(inputImage)
     
     peopleDetector = vision.PeopleDetector;
     [bboxes, scores] = peopleDetector(input);
-    foundPeople = insertObjectAnnotation(input,'rectangle',bboxes, scores);
-    figure;
-    imshow(foundPeople);
-    title('Detected people and detection scores');
-    height = bboxes(4);
+    height = 0;
+    if(isempty(bboxes) || isempty(scores))
+        foundPeople = input;
+    else
+        foundPeople = insertObjectAnnotation(input,'rectangle',bboxes, scores);
+        figure;
+        imshow(foundPeople);
+        title('Detected people and detection scores');
+        height = bboxes(4); 
+    end
+    
     
     %image boundaries from matlab forums
     axis image; % Make sure image is not artificially stretched because of screen's aspect ratio.
@@ -50,7 +56,13 @@ function [outputImage, heightString] = howTall(inputImage)
 %         plot(boundary(:,2),boundary(:,1),'w','LineWidth',2)
 %     end
     outputImage = foundPeople;
-    heightString = "This person is " + height +" pixels tall";
+    if (height == 0)
+         heightString = "Person not found in photo.";
+    else
+         heightString = "This person is " + height +" pixels tall";
+    end
+    
+   
 
 %https://www.mathworks.com/help/images/identifying-round-objects.html#d120e26688
 %https://www.mathworks.com/matlabcentral/answers/116793-how-to-classify-shapes-of-this-image-as-square-rectangle-triangle-and-circle
