@@ -22,7 +22,7 @@ function varargout = UI(varargin)
 
 % Edit the above text to modify the response to help UI
 
-% Last Modified by GUIDE v2.5 27-Mar-2019 17:50:38
+% Last Modified by GUIDE v2.5 15-Apr-2019 19:54:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -81,7 +81,7 @@ varargout{1} = handles.output;
     [filename pathname] = uigetfile({'*.jpg';'*.bmp'},'File Selector');
      handles.myImage = strcat(pathname, filename);
      axes(handles.inputPreview);
-     imshow(handles.myImage)
+     imshow(handles.myImage);
      set(handles.imageText,'string',filename);
      set(handles.uploadText,'string',"Choose a different photo?");
      % save the updated handles object
@@ -101,3 +101,23 @@ if isfield(handles,'myImage')
      imshow(outputImage);
      set(handles.resultText,'string',outputText);
 end
+
+
+% --- Executes on button press in LivePicButton.
+function LivePicButton_Callback(hObject, eventdata, handles)
+% hObject    handle to LivePicButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    cam = webcam;
+    preview(cam);
+    img = snapshot(cam);
+    imwrite(img, "livePic.jpg");
+
+    handles.myImage = strcat("./livePic.jpg");
+
+    axes(handles.inputPreview);
+    imshow(handles.myImage);
+    set(handles.imageText,'string', "Live Picture Taken");
+    set(handles.uploadText,'string',"Choose a different photo?");
+     % save the updated handles object
+    guidata(hObject,handles);
