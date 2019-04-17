@@ -29,8 +29,25 @@ function [outputImage, heightString] = howTall(inputImage)
     imshow(coloredLabels);
     
     % Get all the blob properties.  Can only pass in originalImage in version R2008a and later.
-    blobMeasurements = regionprops(labeledImage, input, 'all');
+    blobMeasurements = regionprops(labeledimage, input, 'all');
     numberOfBlobs = size(blobMeasurements, 1);
+    
+    idHeight = 0;
+    idWidth = 0;
+    for k=1:length(blobMeasurements)
+        
+        curBlob = blobMeasurements(k);
+        ratio = curBlob.MajorAxisLength/curBlob.MinorAxisLength;
+        
+        %credit card ratio is 1.585
+        if(ratio > 1.485 && ratio < 1.685)
+            idHeight = curBlob.MajorAxisLength;
+            idWidth = curBlob.MinorAxisLength;
+        end
+        
+    
+    end
+   
     
     
     peopleDetector = vision.PeopleDetector;
@@ -43,7 +60,7 @@ function [outputImage, heightString] = howTall(inputImage)
         figure;
         imshow(foundPeople);
         title('Detected people and detection scores');
-        height = bboxes(4); 
+        height = bboxes(4) - 125; 
     end
     
     
@@ -70,9 +87,20 @@ function [outputImage, heightString] = howTall(inputImage)
     outputImage = foundPeople;
     if (height == 0)
          heightString = "Person not found in photo.";
-    else
-         heightString = "This person is " + height +" pixels tall";
     end
+    if(idHeight == 0)
+        heightString = "ID/CreditCard not found in photo";
+    end
+    
+    if(height > 0 && idHeight > 0)
+        height = height * (3.75 / idHeight);
+        feet = floor(height / 12) ;
+        inches = round(((height / 12) - feet) * 12, 0);
+        heightString = "This person is " + feet +"'' " + inches + "' tall";
+    end
+    
+    
+    
     
    
   
