@@ -33,7 +33,7 @@ function [outputImage, heightString] = howTall(inputImage)
     numberOfBlobs = size(blobMeasurements, 1);
     
     
-    peopleDetector = vision.PeopleDetector;
+    peopleDetector = vision.PeopleDetector('ClassificationModel','UprightPeople_128x64');
     [bboxes, scores] = peopleDetector(input);
     height = 0;
     if(isempty(bboxes) || isempty(scores))
@@ -67,11 +67,19 @@ function [outputImage, heightString] = howTall(inputImage)
 %         boundary = B(k);
 %         plot(boundary(:,2),boundary(:,1),'w','LineWidth',2)
 %     end
-    outputImage = foundPeople;
+      outputImage = foundPeople;
     if (height == 0)
          heightString = "Person not found in photo.";
-    else
-         heightString = "This person is " + height +" pixels tall";
+    end
+    if(idHeight == 0)
+        heightString = "ID/CreditCard not found in photo";
+    end
+    
+    if(height > 0 && idHeight > 0)
+        height = height * (3.75 / idHeight);
+        feet = floor(height / 12) ;
+        inches = round(((height / 12) - feet) * 12, 0);
+        heightString = "This person is " + feet +"'' " + inches + "' tall";
     end
     
    
