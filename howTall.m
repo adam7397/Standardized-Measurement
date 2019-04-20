@@ -13,10 +13,10 @@ function [outputImage, heightString] = howTall(inputImage)
     bw = bwareaopen(bw,30);
     %imshow(bw);
     
-    se = strel('square',4);
+    se = strel('square',8);
     bw = imclose(bw,se);
     %imshow(bw);
-    bw = imfill(bw, 'holes');
+    %bw = imfill(bw, 'holes');
     figure;
     imshow(bw);
     [B,L] = bwboundaries(bw,'noholes');
@@ -29,11 +29,28 @@ function [outputImage, heightString] = howTall(inputImage)
     imshow(coloredLabels);
     
     % Get all the blob properties.  Can only pass in originalImage in version R2008a and later.
-    blobMeasurements = regionprops(labeledImage, input, 'all');
+    blobMeasurements = regionprops(labeledimage, input, 'all');
     numberOfBlobs = size(blobMeasurements, 1);
     
+    idHeight = 0;
+    idWidth = 0;
+    for k=1:length(blobMeasurements)
+        
+        curBlob = blobMeasurements(k);
+        ratio = curBlob.MajorAxisLength/curBlob.MinorAxisLength;
+        
+        %credit card ratio is 1.585
+        if(ratio > 1.485 && ratio < 1.685)
+            idHeight = curBlob.MajorAxisLength;
+            idWidth = curBlob.MinorAxisLength;
+        end
+        
     
-    peopleDetector = vision.PeopleDetector('ClassificationModel','UprightPeople_128x64');
+    end
+   
+    
+    
+    peopleDetector = vision.PeopleDetector;
     [bboxes, scores] = peopleDetector(input);
     height = 0;
     if(isempty(bboxes) || isempty(scores))
@@ -43,7 +60,7 @@ function [outputImage, heightString] = howTall(inputImage)
         figure;
         imshow(foundPeople);
         title('Detected people and detection scores');
-        height = bboxes(4); 
+        height = bboxes(4) - 110; 
     end
     
     
@@ -67,7 +84,7 @@ function [outputImage, heightString] = howTall(inputImage)
 %         boundary = B(k);
 %         plot(boundary(:,2),boundary(:,1),'w','LineWidth',2)
 %     end
-      outputImage = foundPeople;
+    outputImage = foundPeople;
     if (height == 0)
          heightString = "Person not found in photo.";
     end
@@ -79,10 +96,10 @@ function [outputImage, heightString] = howTall(inputImage)
         height = height * (3.75 / idHeight);
         feet = floor(height / 12) ;
         inches = round(((height / 12) - feet) * 12, 0);
-        heightString = "This person is " + feet +"'' " + inches + "' tall";
+        heightString = "This person is " + feet +"' " + inches + "'' tall";
     end
     
-   
+    
   
 
 %https://www.mathworks.com/help/images/identifying-round-objects.html#d120e26688
