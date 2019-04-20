@@ -15,20 +15,18 @@ function [outputImage, heightString] = howTall(inputImage)
     
     se = strel('square',8);
     bw = imclose(bw,se);
-    %imshow(bw);
-    %bw = imfill(bw, 'holes');
     figure;
     imshow(bw);
     [B,L] = bwboundaries(bw,'noholes');
     
-    %blob image or something
+    %blob image
     labeledimage = bwlabel(bw, 8);
     figure;
     imshow(labeledimage);
     coloredLabels = label2rgb (labeledimage, 'hsv', 'k', 'shuffle');
     imshow(coloredLabels);
     
-    % Get all the blob properties.  Can only pass in originalImage in version R2008a and later.
+    % Get all the blob properties
     blobMeasurements = regionprops(labeledimage, input, 'all');
     numberOfBlobs = size(blobMeasurements, 1);
     
@@ -63,27 +61,7 @@ function [outputImage, heightString] = howTall(inputImage)
         height = bboxes(4) - 110; 
     end
     
-    
-    %image boundaries from matlab forums
-    %axis image; % Make sure image is not artificially stretched because of screen's aspect ratio.
-    %hold on;
-    %boundaries = bwboundaries(bw);
-    %numberOfBoundaries = size(boundaries, 1);
-    %for k = 1 : numberOfBoundaries
-    %    thisBoundary = boundaries{k};
-    %    plot(thisBoundary(:,2), thisBoundary(:,1), 'g', 'LineWidth', 2);
-    %end
-    %hold off;
-
-
-
-
-    
-%     hold on
-%     for k = 1:length(B)
-%         boundary = B(k);
-%         plot(boundary(:,2),boundary(:,1),'w','LineWidth',2)
-%     end
+   
     outputImage = foundPeople;
     if (height == 0)
          heightString = "Person not found in photo.";
@@ -91,17 +69,7 @@ function [outputImage, heightString] = howTall(inputImage)
     if(idHeight == 0)
         heightString = "ID/CreditCard not found in photo";
     end
-    
-    if(height > 0 && idHeight > 0)
-        height = height * (3.75 / idHeight);
-        feet = floor(height / 12) ;
-        inches = round(((height / 12) - feet) * 12, 0);
-        heightString = "This person is " + feet +"'' " + inches + "' tall";
-    end
-    
-    
-    
-    
+   
     if(height > 0 && idHeight > 0)
         height = height * (3.75 / idHeight);
         feet = floor(height / 12) ;
@@ -110,8 +78,4 @@ function [outputImage, heightString] = howTall(inputImage)
     end
     
     
-  
-
-%https://www.mathworks.com/help/images/identifying-round-objects.html#d120e26688
-%https://www.mathworks.com/matlabcentral/answers/116793-how-to-classify-shapes-of-this-image-as-square-rectangle-triangle-and-circle
-%https://www.mathworks.com/matlabcentral/fileexchange/25157-image-segmentation-tutorial
+ 
