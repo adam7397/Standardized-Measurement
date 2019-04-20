@@ -96,6 +96,16 @@ function [outputImage, heightString] = howTall(inputImage)
         height = height * (3.75 / idHeight);
         feet = floor(height / 12) ;
         inches = round(((height / 12) - feet) * 12, 0);
+        heightString = "This person is " + feet +"'' " + inches + "' tall";
+    end
+    
+    
+    
+    
+    if(height > 0 && idHeight > 0)
+        height = height * (3.75 / idHeight);
+        feet = floor(height / 12) ;
+        inches = round(((height / 12) - feet) * 12, 0);
         heightString = "This person is " + feet +"' " + inches + "'' tall";
     end
     

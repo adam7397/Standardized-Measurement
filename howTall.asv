@@ -29,29 +29,25 @@ function [outputImage, heightString] = howTall(inputImage)
     imshow(coloredLabels);
     
     % Get all the blob properties.  Can only pass in originalImage in version R2008a and later.
-    blobMeasurements = regionprops(labeledImage, input, 'all');
+    blobMeasurements = regionprops(labeledimage, input, 'all');
     numberOfBlobs = size(blobMeasurements, 1);
     
-<<<<<<< Updated upstream
-=======
     idHeight = 0;
     idWidth = 0;
     for k=1:length(blobMeasurements)
-        
-        curBlob = blobMeasurements(k);
-        ratio = curBlob.MajorAxisLength/curBlob.MinorAxisLength;
+        curBlob = blobMeasurements{k};
+        ratio = curBlob.MajorAxisLength/curBlob.MinorAxisLength
         
         %credit card ratio is 1.585
         if(ratio > 1.485 && ratio < 1.685)
-            idHeight = curBlob.MajorAxisLength;
-            idWidth = curBlob.MinorAxisLength;
+            idHeight = curBlob.MajorAxisLength
+            idWidth = curBlob.MinorAxisLength
         end
         
     
     end
    
-    
->>>>>>> Stashed changes
+   
     
     peopleDetector = vision.PeopleDetector('ClassificationModel','UprightPeople_128x64');
     [bboxes, scores] = peopleDetector(input);
@@ -90,62 +86,20 @@ function [outputImage, heightString] = howTall(inputImage)
     outputImage = foundPeople;
     if (height == 0)
          heightString = "Person not found in photo.";
-    else
-         heightString = "This person is " + height +" pixels tall";
     end
-<<<<<<< Updated upstream
-=======
+
     if(idHeight == 0)
         heightString = "ID/CreditCard not found in photo";
     end
     
     if(height > 0 && idHeight > 0)
-        height = height * (3.75 / idHeight);
-        feet = floor(height / 12) ;
-        inches = round(((height / 12) - feet) * 12, 0);
-        heightString = "This person is " + feet +"'' " + inches + "' tall";
+        height = height * (3.75 / idHeight)
+        feet = height / 12 
+        inches = (height / 12) - feet
+        heightString = "This person is " + height +" pixels tall";
     end
     
-   
-end
-
-
-function [outputImage, heightString] = howTall2(inputImage)
-    input = imread(inputImage);
-    inputJPG = input;
-    imwrite(input,'input.pgm');
-    input = imread('input.pgm');
-    id = imread('idphoto.jpg');
-    imwrite(id,'idphoto.pgm');
-    %input = imrotate(input, 270);
     
-    frameHSV = rgb2hsv(frame);
-    % Threshold to obtain binary mask
-    bm = thresholdImage(frameHSV);
-    % Perform morphological opening to get rid of noise from flowers
-    bm = imopen(bm,strel('disk',1));
-    bm = imclose(bm,strel('octagon',9));
-    figure; imshow(bm)
-    % Perform blob analysis
-    BA = vision.BlobAnalysis('MinimumBlobArea',10);
-    [area,centroid,bbox] = step(BA,bm);
-    [amax,aidx] = max(area);
-    % Overlay bbox onto image
-    frame = insertShape(frame,'Rectangle',bbox(aidx,:));
-    % Overlay area of biggest blob onto image
-    frame = insertShape(frame,'FilledRectangle',[centroid(aidx,:) 80 15]);
-    TI = vision.TextInserter('Text',['Area = ',num2str(max(area))],'Location',uint16(centroid(aidx,:)));
-    frame = step(TI,frame);
-    % View frame
-    imshow(frame);
-
-
-
-end
->>>>>>> Stashed changes
-    
-   
-  
 
 %https://www.mathworks.com/help/images/identifying-round-objects.html#d120e26688
 %https://www.mathworks.com/matlabcentral/answers/116793-how-to-classify-shapes-of-this-image-as-square-rectangle-triangle-and-circle
