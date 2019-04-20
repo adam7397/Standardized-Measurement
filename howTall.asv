@@ -35,7 +35,6 @@ function [outputImage, heightString] = howTall(inputImage)
     idHeight = 0;
     idWidth = 0;
     for k=1:length(blobMeasurements)
-        
         curBlob = blobMeasurements{k};
         ratio = curBlob.MajorAxisLength/curBlob.MinorAxisLength
         
@@ -48,9 +47,9 @@ function [outputImage, heightString] = howTall(inputImage)
     
     end
    
+   
     
-    
-    peopleDetector = vision.PeopleDetector;
+    peopleDetector = vision.PeopleDetector('ClassificationModel','UprightPeople_128x64');
     [bboxes, scores] = peopleDetector(input);
     height = 0;
     if(isempty(bboxes) || isempty(scores))
@@ -60,7 +59,7 @@ function [outputImage, heightString] = howTall(inputImage)
         figure;
         imshow(foundPeople);
         title('Detected people and detection scores');
-        height = bboxes(4); 
+        height = bboxes(4) - 125; 
     end
     
     
@@ -88,6 +87,7 @@ function [outputImage, heightString] = howTall(inputImage)
     if (height == 0)
          heightString = "Person not found in photo.";
     end
+
     if(idHeight == 0)
         heightString = "ID/CreditCard not found in photo";
     end
@@ -100,10 +100,6 @@ function [outputImage, heightString] = howTall(inputImage)
     end
     
     
-    
-    
-   
-  
 
 %https://www.mathworks.com/help/images/identifying-round-objects.html#d120e26688
 %https://www.mathworks.com/matlabcentral/answers/116793-how-to-classify-shapes-of-this-image-as-square-rectangle-triangle-and-circle

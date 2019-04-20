@@ -13,10 +13,10 @@ function [outputImage, heightString] = howTall(inputImage)
     bw = bwareaopen(bw,30);
     %imshow(bw);
     
-    se = strel('square',4);
+    se = strel('square',8);
     bw = imclose(bw,se);
     %imshow(bw);
-    bw = imfill(bw, 'holes');
+    %bw = imfill(bw, 'holes');
     figure;
     imshow(bw);
     [B,L] = bwboundaries(bw,'noholes');
@@ -60,7 +60,7 @@ function [outputImage, heightString] = howTall(inputImage)
         figure;
         imshow(foundPeople);
         title('Detected people and detection scores');
-        height = bboxes(4) - 125; 
+        height = bboxes(4) - 110; 
     end
     
     
@@ -102,7 +102,14 @@ function [outputImage, heightString] = howTall(inputImage)
     
     
     
-   
+    if(height > 0 && idHeight > 0)
+        height = height * (3.75 / idHeight);
+        feet = floor(height / 12) ;
+        inches = round(((height / 12) - feet) * 12, 0);
+        heightString = "This person is " + feet +"' " + inches + "'' tall";
+    end
+    
+    
   
 
 %https://www.mathworks.com/help/images/identifying-round-objects.html#d120e26688
