@@ -83,7 +83,6 @@ varargout{1} = handles.output;
      axes(handles.inputPreview);
      imshow(handles.myImage);
      set(handles.imageText,'string',filename);
-     set(handles.uploadText,'string',"Choose a different photo?");
      % save the updated handles object
     guidata(hObject,handles);
 
@@ -118,6 +117,5 @@ function LivePicButton_Callback(hObject, eventdata, handles)
     axes(handles.inputPreview);
     imshow(handles.myImage);
     set(handles.imageText,'string', "Live Picture Taken");
-    set(handles.uploadText,'string',"Choose a different photo?");
      % save the updated handles object
     guidata(hObject,handles);
